@@ -170,7 +170,8 @@ no.Model.key = function(id, params, info) {
  * @return {no.Model} Newly created model instance.
  */
 no.Model.clone = function(model, params, data) {
-    var params = no.extend({}, model.params, params);
+    params = no.extend({}, model.params, params);
+    data = no.extend({}, model.getData(), data);
     return no.Model.create(model.id, params, data);
 };
 

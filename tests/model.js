@@ -93,12 +93,12 @@ test('Clone model and override some parameter', function() {
         }
     });
 
-    var p1 = no.Model.create('photo-position', { 'author-login': 'chestozo', 'image-id': 1, 'album-id': 2 }, { position: 1 });
+    var p1 = no.Model.create('photo-position', { 'author-login': 'chestozo', 'image-id': 1, 'album-id': 2 }, { position: 1, total: 5 });
     var p2 = no.Model.clone(p1, { 'image-id': 2 }, { position: 2 });
 
     equal(p1.key, 'model=photo-position&author-login=chestozo&image-id=1&album-id=2', 'Prototype model key is valid');
     equal(p2.key, 'model=photo-position&author-login=chestozo&image-id=2&album-id=2', 'Cloned model key is valid');
 
-    deepEqual(no.Model.get('photo-position', { 'author-login': 'chestozo', 'image-id': 1, 'album-id': 2 }).getData(), { position: 1 }, 'Check prototype model is stored right');
-    deepEqual(no.Model.get('photo-position', { 'author-login': 'chestozo', 'image-id': 2, 'album-id': 2 }).getData(), { position: 2 }, 'Check cloned model is stored right');
+    deepEqual(no.Model.get('photo-position', { 'author-login': 'chestozo', 'image-id': 1, 'album-id': 2 }).getData(), { position: 1, total: 5 }, 'Check prototype model is stored right');
+    deepEqual(no.Model.get('photo-position', { 'author-login': 'chestozo', 'image-id': 2, 'album-id': 2 }).getData(), { position: 2, total: 5 }, 'Check cloned model is stored right');
 });
