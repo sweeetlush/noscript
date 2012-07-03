@@ -162,6 +162,20 @@ no.Model.key = function(id, params, info) {
 
 //  ---------------------------------------------------------------------------------------------------------------  //
 
+/**
+ * Clone model.
+ * @param {no.Model} model Prototype to be cloned from.
+ * @param {Object} params Additional params to overwrite prototype params.
+ * @param {Object} data Real data object for model.
+ * @return {no.Model} Newly created model instance.
+ */
+no.Model.clone = function(model, params, data) {
+    var params = no.extend({}, model.params, params);
+    return no.Model.create(model.id, params, data);
+};
+
+// ----------------------------------------------------------------------------------------------------------------- //
+
 //  Инвалидируем все модели с заданным id,
 //  удовлетворяющие фильтру filter (функция, принимающая
 //  параметром модель и возвращающая boolean).

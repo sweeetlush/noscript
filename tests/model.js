@@ -16,23 +16,21 @@ module("key");
 test("Sorting", function() {
     expect(2);
 
-    no.Model.register({
-        id: "first",
-        keyParams: {
+    no.Model.define('first', {
+        params: {
             "a": null,
             "b": null
         }
-    }, no.Model);
+    });
     equal(no.Model.key("first", { a: 1, b: 3 }), "model=first&a=1&b=3", "Sorting: a first");
 
-    no.Model.register({
-        id: "second",
-        keyParams: {
+    no.Model.define('second', {
+        params: {
             "b": null,
             "a": null
         }
-    }, no.Model);
-    equal(no.Model.key("second", { a: 1, b: 3 }), "model=second&a=1&b=3", "Sorting: a first");
+    });
+    equal(no.Model.key("second", { a: 1, b: 3 }), "model=second&b=3&a=1", "Sorting: model params goes in the same order as specified in model info");
 
     // cleanup
     no.Model._infos = {};
@@ -42,18 +40,16 @@ test("Sorting", function() {
 test("Missing params", function() {
     expect(2);
 
-    no.Model.register({
-        id: "first",
-        keyParams: {
+    no.Model.define('first', {
+        params: {
             "a": null,
             "b": null
         }
-    }, no.Model);
+    });
     equal(no.Model.key("first", { a: 1 }), "model=first&a=1", "Key will be created using specified params, missing params are ignored");
 
-    no.Model.register({
-        id: "first",
-        keyParams: {
+    no.Model.define('first', {
+        params: {
             "a": null,
             "b": null
         }
@@ -68,9 +64,8 @@ test("Missing params", function() {
 test("defaults", function() {
     expect(4);
 
-    no.Model.register({
-        id: "first",
-        keyParams: {
+    no.Model.define('first', {
+        params: {
             "a": null,
             "b": null,
             "c": "hello"
@@ -78,7 +73,7 @@ test("defaults", function() {
     }, no.Model);
 
     equal(no.Model.key("first", { a: 1, b: 2 }), "model=first&a=1&b=2&c=hello", "Default value is placed in key, when parameter is not specified");
-    equal(no.Model.key("first", { a: 1, b: 2, c: null }), "model=first&a=1&b=2&c=hello", "Default value is used when parameter=null");
+    equal(no.Model.key("first", { a: 1, b: 2, c: null }), "model=first&a=1&b=2", "parameter=null is a valid value for parameter");
     equal(no.Model.key("first", { a: 1, b: 2, c: undefined }), "model=first&a=1&b=2&c=hello", "Default value is used when parameter=undefined");
     equal(no.Model.key("first", { a: 1, b: 2, c: 3 }), "model=first&a=1&b=2&c=3", "Default value is replaced in key, when parameter specified");
 });
