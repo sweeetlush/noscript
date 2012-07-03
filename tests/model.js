@@ -77,3 +77,28 @@ test("defaults", function() {
     equal(no.Model.key("first", { a: 1, b: 2, c: undefined }), "model=first&a=1&b=2&c=hello", "Default value is used when parameter=undefined");
     equal(no.Model.key("first", { a: 1, b: 2, c: 3 }), "model=first&a=1&b=2&c=3", "Default value is replaced in key, when parameter specified");
 });
+
+// ----------------------------------------------------------------------------------------------------------------- //
+module('clone');
+
+test('Clone model and override some parameter', function() {
+    no.Model.define('photo-position', {
+        params: {
+            'author-login': null,
+            'image-id': null,
+
+            // Some of these must be specified.
+            'album-id': null,
+            'tag': null
+        }
+    });
+
+    var p1 = no.Model.create('photo-position', { 'author-login': 'chestozo', 'image-id': 1, 'album-id': 2 }, { position: 1 });
+    var p2 = no.Model.clone(p1, { 'image-id': 2 }, { position: 2 });
+
+    equal(p1.key, 'model=photo-position&author-login=chestozo&image-id=1&album-id=2', 'Prototype model key is valid');
+    equal(p2.key, 'model=photo-position&author-login=chestozo&image-id=2&album-id=2', 'Cloned model key is valid');
+
+    deepEqual(no.Model.get('photo-position', { 'author-login': 'chestozo', 'image-id': 1, 'album-id': 2 }).getData(), { position: 1 }, 'Check prototype model is stored right');
+    deepEqual(no.Model.get('photo-position', { 'author-login': 'chestozo', 'image-id': 2, 'album-id': 2 }).getData(), { position: 2 }, 'Check cloned model is stored right');
+});
